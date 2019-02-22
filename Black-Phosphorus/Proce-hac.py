@@ -31,7 +31,7 @@ ave_rtc=[0 for i in range(N_freq//interval)]
 for i in range(N_fram):
     start=i*N_freq
     end =(i+1)*N_freq
-    rtc_i=DATA[start:end:interval,8]+DATA[start:end:interval,9]+DATA[start:end:interval,10]
+    rtc_i=DATA[start:end:interval,7]+DATA[start:end:interval,8]
     if i==0:
         ax.plot(TIME,rtc_i,'Gray',linewidth=1,label='RTC')
     else:
@@ -44,7 +44,7 @@ std_rtc=[]
 for j in range(N_freq//interval):
     stdat=[]
     for k in range(N_fram):
-        stdat.append(DATA[k*N_freq+j*interval,8]+DATA[k*N_freq+j*interval,9]+DATA[k*N_freq+j*interval,10])
+        stdat.append(DATA[k*N_freq+j*interval,7]+DATA[k*N_freq+j*interval,8])
     std_rtc.append(np.std(stdat,ddof=0)/math.sqrt(N_fram))
 ax.plot(TIME,ave_rtc+std_rtc,'k--',linewidth=2,label=r'RTC$_{stdev}$')
 ax.plot(TIME,ave_rtc-std_rtc,'k--',linewidth=2)
