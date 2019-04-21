@@ -1,0 +1,7 @@
+potential       ./mos2_sw3_2016.txt
+velocity        300
+ensemble        npt_ber 300 300 0.01 0 0 0 0.0005 
+time_step       1
+dump_thermo     1000
+dump_position   1000
+run             10000
