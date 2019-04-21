@@ -1,0 +1,13 @@
+Compiling GPUMD
+
+Statement:
+This tutorial is not guaranteed to work flawlessly on all machines.
+Please email the author if you have any questions.
+
+After compiling GPUMD, one should install the NVIDIA drivers and CUDA.
+The version of CUDA should match with NVIDIA drivers.
+The version NVIDIA drivers should match with your computer.
+
+Installation tutorial:
+Read the 'Compile GPUMD' part of:
+https://github.com/Kick-H/GPUMD/blob/master/README.md

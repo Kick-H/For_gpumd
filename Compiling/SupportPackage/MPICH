@@ -1,0 +1,26 @@
+Install MPICH before LAMMPS compiling
+
+Statement:
+This tutorial is not guaranteed to work flawlessly on all machines.
+Please email the author if you have any questions.
+
+Step 1: Download Package.
+* Choose a version of the MPICH which you like:
+* http://www.mpich.org/downloads/
+
+Step 2: Enter your directory.
+Copy the package(ex: MPICH2.tar.gz) you have download to a directory(ex:
+        /home/user/Soft/).
+
+    user@ubuntu:~$ cp */MPICH2.tar.gz /home/user/Soft/
+
+Step 3: Compiling.
+    user@ubuntu:~$ cd /home/user/Soft/
+    user@ubuntu:~$ tar -xvf ./MPICH2.tar.gz
+    user@ubuntu:~$ cd ./mpich*
+    user@ubuntu:~$ ./configure --prefix=/home/user/Soft/mpich*/
+    user@ubuntu:~$ make
+    user@ubuntu:~$ make install
+    user@ubuntu:~$ echo "export PATH=/home/user/Soft/mpich*/bin:$PATH" >> ~/.bashrc
+    user@ubuntu:~$ source ~/.bashrc
+    user@ubuntu:~$ which mpicc

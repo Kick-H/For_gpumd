@@ -1,0 +1,24 @@
+Install FFTW before LAMMPS compiling
+
+Statement:
+This tutorial is not guaranteed to work flawlessly on all machines.
+Please email the author if you have any questions.
+
+Step 1: Download Package.
+* Choose a version of the FFTW which you like:
+* http://www.fftw.org/download.html
+
+Step 2: Enter your directory.
+Copy the package(ex: FFTW3.tar.gz) you have download to a directory(ex:
+        /home/user/Soft/).
+
+    user@ubuntu:~$ cp */FFTW3.tar.gz /home/user/Soft/
+
+Step 3: Compiling.
+    user@ubuntu:~$ cd /home/user/Soft/
+    user@ubuntu:~$ tar -xvf ./FFTW3.tar.gz
+    user@ubuntu:~$ cd ./fftw*
+    user@ubuntu:~$ ./configure --prefix=/home/user/Soft/fftw*/
+    user@ubuntu:~$ make install
+    user@ubuntu:~$ echo "export PATH=/home/user/Soft/fftw*/bin:$PATH" >> ~/.bashrc
+    user@ubuntu:~$ source ~/.bashrc

@@ -1,0 +1,29 @@
+Compile LAMMPS(mpi version)
+
+Statement:
+This tutorial is not guaranteed to work flawlessly on all machines.
+Please email the author if you have any questions.
+
+Step 1: Download Package.
+* Choose the lastest version of LAMMPS:
+* https://lammps.sandia.gov/download.html
+* !!! Worning !!!
+* !!! One should compile the MPICH and FFTW package before compile LAMMPS.
+
+Step 2: Enter your directory.
+Copy the package(ex: LAMMPS.tar.gz) you have download to a directory(ex:
+        /home/user/Soft/).
+
+    user@ubuntu:~$ cp */LAMMPS.tar.gz /home/user/Soft/
+
+Step 3: Compiling.
+    user@ubuntu:~$ cd /home/user/Soft/
+    user@ubuntu:~$ tar -xvf ./LAMMPS.tar.gz
+    user@ubuntu:~$ cd ./lammps*/src
+    user@ubuntu:~$ make yes-standard
+                   # Choose the package you would like to.
+    user@ubuntu:~$ make mpi
+    user@ubuntu:~$ echo "export PATH=/home/user/Soft/lammps*/src:$PATH" >> ~/.bashrc
+    user@ubuntu:~$ source ~/.bashrc
+    user@ubuntu:~$ which lmp_mpi
+
