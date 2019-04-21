@@ -47,7 +47,7 @@ GpumdSupport (Root directory)
 ------------------
 
 * Xu Ke (Northwest A&F University.)
-  * KickHsu(at)gmail.com
+  * kickhsu(at)gmail.com
   * twtdq(at)126.com
 
 If you are willing to work together (without pay, for free), please contact the author in time.
@@ -69,5 +69,5 @@ Thank you!
   
 ### References
 ------------------
-* [1] K. Xu, Z. Fan, J. Zhang, N. Wei, T. Ala-Nissila, Thermal transport properties of single-layer black phosphorous from extensive molecular dynamics simulations, Modelling Simul. Mater. Sci. Eng. 26, 085001 (2018). DOI: 
+* [1] K. Xu, Z. Fan, J. Zhang, N. Wei, T. Ala-Nissila, Thermal transport properties of single-layer black phosphorous from extensive molecular dynamics simulations, Modelling Simul. Mater. Sci. Eng. 26, 085001 (2018).
 * [2] K. Xu, A. J. Gabourie, A. Hashemi, Z. Fan, N. Wei, A. B. Farimani, H. Komsa, A. V. Krasheninnikov, E. Pop, T. Ala-Nissila, Thermal transport in MoS2 from molecular dynamics using different empirical potentials, Phys. Rev. B 99, 054303 (2019).
