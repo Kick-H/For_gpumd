@@ -1,4 +1,5 @@
 # Some example of `GPUMD`
+<a href="https://996.icu"><img src="https://img.shields.io/badge/link-996.icu-red.svg" alt="996.icu" /></a>
 
 One can get the introduction of `GPUMD` on https://github.com/brucefan1983/GPUMD/blob/master/README.md.
 
@@ -15,6 +16,10 @@ Directory structure of this project:
 GpumdSupport (Root directory)
 │
 ├── README.md
+│
+├── LICENSE    # a gnu license
+│
+├── Disclaimer
 │
 ├── Compiling
 |   └── Some-other-directory ()
@@ -66,8 +71,9 @@ Thank you!
   * Email: brucenju(at)gmail.com
   * Github: https://github.com/brucefan1983
   * Sciencenet.cn: http://blog.sciencenet.cn/u/brucefan1983
-  
+  * Google Scholar: https://scholar.google.com.hk/citations?user=bsOhaEAAAAAJ&hl=en
+
 ### References
 ------------------
-* [1] K. Xu, Z. Fan, J. Zhang, N. Wei, T. Ala-Nissila, Thermal transport properties of single-layer black phosphorous from extensive molecular dynamics simulations, Modelling Simul. Mater. Sci. Eng. 26, 085001 (2018).
-* [2] K. Xu, A. J. Gabourie, A. Hashemi, Z. Fan, N. Wei, A. B. Farimani, H. Komsa, A. V. Krasheninnikov, E. Pop, T. Ala-Nissila, Thermal transport in MoS2 from molecular dynamics using different empirical potentials, Phys. Rev. B 99, 054303 (2019).
+* [1] K. Xu, Z. Fan, J. Zhang, N. Wei, T. Ala-Nissila, Thermal transport properties of single-layer black phosphorous from extensive molecular dynamics simulations, Modelling Simul. Mater. Sci. Eng. 26, 085001 (2018). DOI: 10.1088/1361-651X/aae180
+* [2] K. Xu, A. J. Gabourie, A. Hashemi, Z. Fan, N. Wei, A. B. Farimani, H. Komsa, A. V. Krasheninnikov, E. Pop, T. Ala-Nissila, Thermal transport in MoS2 from molecular dynamics using different empirical potentials, Phys. Rev. B 99, 054303 (2019). DOI: 10.1103/PhysRevB.99.054303
