@@ -4,6 +4,11 @@ Here are some data files that need to be downloaded from Google Drive.
 We cannot ensure the accuracy of all uploaded files. 
 If there are any questions, please email the authors: Xu Ke.
 
+The version of GPUMD should be less than v1.9 in this work.
+If you use the latest version,
+   Please update some input file of this work use the program in this project.
+   Maybe some program also need to be modified.
+
 ```
 BlackPhosphorus
 │
