@@ -1,7 +1,5 @@
 # Some example of `GPUMD`
 
-<a href="https://996.icu"><img src="https://img.shields.io/badge/link-996.icu-red.svg" alt="996.icu" /></a>
-
 One can get the introduction of `GPUMD` on https://github.com/brucefan1983/GPUMD/blob/master/README.md.
 
 Here are two published paper[1,2] using `GPUMD` with the developers of `GPUMD`: Bruce Fan. At the invitation of Bruce Fan, all the data and code of the two articles will be published here. One can learn how to use `GPUMD` to do a job and even publish an article from start to finish. At present, only relevant research work on the thermal transport of black phosphorus and molybdenum disulfide is disclosed. In the future, more and more people will come here to disclose their work using `GPUMD`.
@@ -20,24 +18,25 @@ GpumdSupport (Root directory)
 │
 ├── LICENSE    # a gnu license
 │
-├── Disclaimer
-│
 ├── Compiling
-|   └── Some-other-directory ()
+│   │
+│   ├── GPUMD
+│   │
+│   ├── LAMMPS
+│   │
+│   └── SupportPackage
 │
 ├── Test
-│   ├── CrossTestWithLAMMPS
-│   │   ├── Force ()
-|   │   └── Some-other-directory ()
-|   └── Some-other-directory ()
+│   │
+│   └── CrossTestWithLAMMPS
+│       │
+│       └── Force
 │
-├── ThermalTransport
-│   ├── BlackPhosphorus ()
-│   ├── MolybdenumDisulfide ()
-|   └── Some-other-directory ()
-│
-└── Some-other-directory ()
-    └── Some-other-directory
+└── ThermalTransport
+    │
+    ├── BlackPhosphorus (Work: Thermal transport properties of single-layer black phosphorus from extensive molecular dynamics simulations)
+    │
+    └── MolybdenumDisulfide (Work: Thermal transport in MoS2 from molecular dynamics using different empirical potentials)
 ```
 
 ### How to use it
