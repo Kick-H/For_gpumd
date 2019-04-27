@@ -1,0 +1,109 @@
+# Lammps input script for thermal conductivity of MoS2 with EMD method.
+variable     T       equal 300
+variable     d_T     equal 30
+variable     dt      equal 0.001
+variable     steps   equal 10000000    # run 
+
+variable     T_h     equal $T+${d_T}
+variable     T_l     equal $T-${d_T}
+variable     V       equal lx*ly*6.15  # atom volume
+variable     td      equal ${dt}*100
+variable     r_fix   equal 10
+variable     r_hot   equal (lx-${r_fix})/22+${r_fix}
+variable     r_col   equal (lx-${r_fix})/22*21+${r_fix}-0.1
+
+variable     chunk1  equal (lx-${r_fix})/10*1+${r_fix}
+variable     chunk2  equal (lx-${r_fix})/10*2+${r_fix}
+variable     chunk3  equal (lx-${r_fix})/10*3+${r_fix}
+variable     chunk4  equal (lx-${r_fix})/10*4+${r_fix}
+variable     chunk5  equal (lx-${r_fix})/10*5+${r_fix}
+variable     chunk6  equal (lx-${r_fix})/10*6+${r_fix}
+variable     chunk7  equal (lx-${r_fix})/10*7+${r_fix}
+variable     chunk8  equal (lx-${r_fix})/10*8+${r_fix}
+variable     chunk9  equal (lx-${r_fix})/10*9+${r_fix}
+
+units        metal 
+dimension    3
+boundary     p p sm
+atom_style   atomic   
+read_data    read.data
+pair_style   sw
+pair_coeff   * * ./jiang-nt.sw T B
+
+neighbor     0.1  bin
+neigh_modify once yes
+dump         01 all  xyz  100000 all.xyz
+timestep     ${dt}
+thermo       10
+thermo_style one
+
+region       Fix block INF      ${r_fix} INF INF INF INF
+region       Hot block ${r_fix} ${r_hot} INF INF INF INF
+region       Col block ${r_col} INF      INF INF INF INF
+
+group        fix region Fix
+group        hot region Hot
+group        col region Col
+group        mov subtract all fix
+group        tem subtract all hot col fix
+
+region       C_1 block ${chunk1} ${chunk2} INF INF INF INF
+region       C_2 block ${chunk2} ${chunk3} INF INF INF INF
+region       C_3 block ${chunk3} ${chunk4} INF INF INF INF
+region       C_4 block ${chunk4} ${chunk5} INF INF INF INF
+region       C_5 block ${chunk5} ${chunk6} INF INF INF INF
+region       C_6 block ${chunk6} ${chunk7} INF INF INF INF
+region       C_7 block ${chunk7} ${chunk8} INF INF INF INF
+region       C_8 block ${chunk8} ${chunk9} INF INF INF INF
+region       C_9 block ${chunk9} INF       INF INF INF INF
+
+group        C_1 region C_1
+group        C_2 region C_2
+group        C_3 region C_3
+group        C_4 region C_4
+group        C_5 region C_5
+group        C_6 region C_6
+group        C_7 region C_7
+group        C_8 region C_8
+group        C_9 region C_9
+
+fix          SETF fix setforce 0.0 0.0 0.0
+fix          MOME fix momentum 1 linear 1 1 1 angular
+
+# equilibration and thermalization
+variable     R    equal  652318
+velocity     mov  create $T $R mom yes rot yes dist gaussian units box
+fix          NPT  all npt temp $T $T 0.1 x 0 0 1 y 0 0 1 drag 1.0
+run          1000000
+unfix        NPT
+
+reset_timestep 0
+
+# thermal conductivity calculation, switch to NVE if desired
+fix          NVE  tem nve
+fix          NVT1 hot nvt temp ${T_h} ${T_h} ${td}
+fix_modify   NVT1 energy yes
+fix          NVT2 col nvt temp ${T_l} ${T_l} ${td}
+fix_modify   NVT2 energy yes
+compute      myKE all ke/atom
+compute      myPE all pe/atom
+compute      mySt all stress/atom NULL virial
+compute      1 C_1 heat/flux myKE myPE mySt
+compute      2 C_2 heat/flux myKE myPE mySt
+compute      3 C_3 heat/flux myKE myPE mySt
+compute      4 C_4 heat/flux myKE myPE mySt
+compute      5 C_5 heat/flux myKE myPE mySt
+compute      6 C_6 heat/flux myKE myPE mySt
+compute      7 C_7 heat/flux myKE myPE mySt
+compute      8 C_8 heat/flux myKE myPE mySt
+compute      9 C_9 heat/flux myKE myPE mySt
+
+thermo_style custom step temp pxx pyy f_NVT1 f_NVT2 
+variable     TEMP atom c_myKE/(1.5*8.6173303e-5)
+compute      CHUN mov chunk/atom bin/1d x ${r_fix} 0.045454545 units reduced
+fix          AVEC mov ave/chunk 1 100000 100000 CHUN v_TEMP file temp.dat
+
+fix          AVET all ave/time 1 100000 100000 c_1[*] c_2[*] c_3[*] c_4[*]&
+			  c_5[*] c_6[*] c_7[*] c_8[*] c_9[*] file ene.dat
+
+run          ${steps}
