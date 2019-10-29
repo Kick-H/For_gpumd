@@ -1,0 +1,28 @@
+Worning!
+
+Prepare Files:
+
+ lmpfl1="pair_rebomos.cpp"
+ lmpfl2="pair_rebomos.h"
+ gpufl="makefile"    # no DFORCE
+ 
+ pkdoc="package"
+ lmppk="lammps-stable.tar.gz"  # lammps-31Mar17
+ gpupk="GPUMD.zip"   # 2.4.1
+ 
+ indoc="infiles"
+ modfl="mos2.cpp"    # two type.
+ runpr="gcc"
+ runin="run.in"      # timestep 0, run 1
+ potgp="MoS_Liang_2009.txt"
+ potla="MoS.REBO.set5b"
+ pyfil="format.py"
+
+
+# one # in GPUMD
+1. neighbor cutoff in xyz.in
+2. timestep 0 and run 1
+
+MoS2-Rebo-Lj potential download:
+https://research.matse.psu.edu/sinnott/software
+
