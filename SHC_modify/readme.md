@@ -23,9 +23,10 @@ If each atom is in one group, one can get the per-atom SHC.
 
 ### Input
 * [model.xyz](https://github.com/brucefan1983/GPUMD/blob/master/examples/04_Carbon_thermal_transport_nemd_and_hnemd/diffusive/model.xyz)
-> 24000
-
-> pbc="T T F" Lattice="245.951 0 0 0 255.6 0 0 0 3.35" Properties=species:S:1:pos:R:3:group:I:1
+```
+24000
+pbc="T T F" Lattice="245.951 0 0 0 255.6 0 0 0 3.35" Properties=species:S:1:pos:R:3:group:I:1
+```
 
 * run.in
 
