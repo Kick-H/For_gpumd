@@ -14,8 +14,9 @@ If group is -1, it means to calculate the SHC for every group in the group_metho
 If each atom is in one group, one can get the per-atom SHC.
 
 ## Instructions
-* copy modify_shc.cu to ${GPUMD}/src/measure/shc.cu
-* copy modify_shc.cuh to ${GPUMD}/src/measure/shc.cuh
+* copy script/modify_shc.cu to ${GPUMD}/src/measure/shc.cu
+* copy script/modify_shc.cuh to ${GPUMD}/src/measure/shc.cuh
+* add the -DDEBUG in src/makefile (-DUSE_TABLE)
 * cd ${GPUMD}/src && make clean && make gpumd -j12
 
 ## Test
