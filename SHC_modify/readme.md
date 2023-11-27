@@ -48,5 +48,5 @@ If each atom is in one group, one can get the per-atom SHC.
 ### Results
 
 <div align="left">
-<img src="./PNGs/results.png" width = "25%" />
+<img src="./PNGs/results.png" width = "80%" />
 </div>
