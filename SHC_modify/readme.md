@@ -1,7 +1,13 @@
 # Modify compute_shc
 Make the compute_shc command in GPUMD support multiple sets of calculations
 
-Date: 2021-11-27
+Date: 2023-11-27
+
+## Note
+
+Now this function has been added to the `master` version of [GPUMD](https://github.com/brucefan1983/GPUMD). One can use the command directly when using the master version. The user manual has also been updated in the `dve` version, please refer to [compute_shc](https://gpumd.org/dev/gpumd/input_parameters/compute_shc.html).
+
+If you have any questions, please contact me in time, thank you very much.
 
 ## Refer to [compute_dos](https://gpumd.org/gpumd/input_parameters/compute_dos.html) command
 * compute_shc <sample_interval> <Nc> <transport_direction> <num_omega> <max_omega> [{<optional_arg>}]
