@@ -1,0 +1,10 @@
+version     4
+type        1 Si
+cutoff      5 5
+n_max       10 10      # default 4 4
+neuron      60         # default 30
+lambda_1    0.1        # default 0.05
+lambda_2    0.1        # default 0.05
+batch       1000
+generation  1000
+
