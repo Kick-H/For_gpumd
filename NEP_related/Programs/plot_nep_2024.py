@@ -75,7 +75,7 @@ def plot_nep_dft(data, title):
     ylabel(f'NEP {title[0]} ({units[0]})')
     legend([f'{title[1]} RMSE:{1000*RMSE:.4f} {units[1]}'], loc="upper left")
     if print_rmse:
-        print(title[0], title[1], RMSE, units[1])
+        print(title[0], title[1], 1000*RMSE:.4f, units[1])
     # tight_layout()
 
 
