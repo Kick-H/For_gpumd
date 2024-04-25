@@ -1,4 +1,6 @@
+import numpy as np
 from pylab import *
+
 
 ##set figure properties
 aw = 1.5
@@ -7,201 +9,205 @@ lw = 2.0
 font = {'size'   : fs}
 matplotlib.rc('font', **font)
 matplotlib.rc('axes' , lw=aw)
-
 def set_fig_properties(ax_list):
     tl = 6
     tw = 1.5
     tlm = 3
-
     for ax in ax_list:
         ax.tick_params(which='major', length=tl, width=tw)
         ax.tick_params(which='minor', length=tlm, width=tw)
         ax.tick_params(which='both', axis='both', direction='out', right=False, top=False)
 
+
 def plot_nep(pout):
     nep = np.loadtxt("./nep.txt", skiprows=6)
     figure(figsize=(16, 7))
-    plt.subplot(1,2,1)
-    plt.hist(np.log(np.abs(nep)), bins=50)
-    plt.subplot(1,2,2)
-    plt.scatter(range(len(nep)), nep, s=0.5)
-    plt.gcf().set_size_inches(9,3)
-    plt.savefig(pout, dpi=300)
+    subplot(1,2,1)
+    hist(np.log(np.abs(nep)), bins=50)
+    subplot(1,2,2)
+    scatter(range(len(nep)), nep, s=0.5)
+    gcf().set_size_inches(9,3)
+    savefig(pout, dpi=300)
 
 
-def com_RMSE(fin):
-    nclo = int(fin.shape[1]/2)
-    pids = fin[:, nclo] > -1e5
-    targe = fin[pids, :nclo].reshape(-1)
-    predi = fin[pids, nclo:].reshape(-1)
-    return np.sqrt(((predi - targe) ** 2).mean())
+def plot_loss(loss, test=True):
+    loss_title = "gen total l1 l2 e_train f_train v_train e_test f_test v_test".split(' ')
+    for i in range(1, 7):
+        loglog(loss[:, 0], loss[:, i], ls="-", lw=lw, label=loss_title[i])
+    if test:
+        for i in range(7, 10):
+            loglog(loss[:, 0], loss[:, i], ls="-", lw=lw, label=loss_title[i])
+    xlabel('Generation/100')
+    ylabel('Loss')
+    legend(loc="lower left", ncol=2, fontsize=14, frameon=False, columnspacing=0.2)
+    # tight_layout()
 
 
-loss = loadtxt('loss.out')
-print("Run %s."%(len(loss)*100), end=" ")
-loss[:,0] = np.arange(1, len(loss) + 1)*100
-energy_train = loadtxt('energy_train.out')
-force_train = loadtxt('force_train.out')
-virial_train = loadtxt('virial_train.out')
-stress_train = loadtxt('stress_train.out')
-
-error_energy_train = com_RMSE(energy_train)*1000
-error_force_train = com_RMSE(force_train)*1000
-error_virial_train = com_RMSE(virial_train)*1000
-error_stress_train = com_RMSE(stress_train)*1000
-print("{:.4f} {:.4f} {:.4f} {:.4f}".format(error_energy_train,error_force_train,error_virial_train,error_stress_train), end=' ')
-
-test_flag = 1
-if test_flag == 1:
-    energy_test = loadtxt('energy_test.out')
-    force_test = loadtxt('force_test.out')
-    virial_test = loadtxt('virial_test.out')
-    stress_test = loadtxt('stress_test.out')
-    error_energy_test = com_RMSE(energy_test)*1000
-    error_force_test = com_RMSE(force_test)*1000
-    error_virial_test = com_RMSE(virial_test)*1000
-    error_stress_test = com_RMSE(stress_test)*1000
-    print("{:.4f} {:.4f} {:.4f} {:.4f}".format(error_energy_test,error_force_test,error_virial_test,error_stress_test), end=' ')
-print()
-
-figure(figsize=(20, 15))
-subplot(2, 2, 1)
-set_fig_properties([gca()])
-loglog(loss[:, 0], loss[:, 1],  ls="-", lw=lw, c = "C1", label="Total")
-loglog(loss[:, 0], loss[:, 2],  ls="-", lw=lw, c = "C4", label=r"$L_{1}$")
-loglog(loss[:, 0], loss[:, 3],  ls="-", lw=lw, c = "C5", label=r"$L_{2}$")
-loglog(loss[:, 0], loss[:, 4],  ls="-", lw=lw, c = "C0", label="Energy_train")
-loglog(loss[:, 0], loss[:, 5],  ls="-", lw=lw, c = "C2", label="Force_train")
-loglog(loss[:, 0], loss[:, 6],  ls="-", lw=lw, c = "C3", label="Virial_train")
-
-if test_flag == 1:
-    loglog(loss[:, 0], loss[:, 7],  ls="--", lw=lw, c = "C6", label="Energy_test")
-    loglog(loss[:, 0], loss[:, 8],  ls="--", lw=lw, c = "C7", label="Force_test")
-    loglog(loss[:, 0], loss[:, 9],  ls="--", lw=lw, c = "C8", label="Virial_test")
-
-#xlim([1e2, 10e5])
-#ylim([1e-3, 5e0])
-xlabel('Generation')
-ylabel('Loss')
-legend(loc="lower left",
-        ncol = 2,
-        fontsize = 14,
-        frameon = False,
-        columnspacing = 0.2)
-
-subplot(2, 2, 2)
-set_fig_properties([gca()])
-if test_flag == 1:
-    ene_min = np.min([np.min(energy_train),np.min(energy_test)])
-    ene_max = np.max([np.max(energy_train),np.max(energy_test)])
-else:
-    ene_min = np.min(energy_train)
-    ene_max = np.max(energy_train)
-ene_min -= (ene_max-ene_min)*0.1
-ene_max += (ene_max-ene_min)*0.1
-plot([ene_min, ene_max], [ene_min, ene_max], c = "grey", lw = 3)
-plot(energy_train[:, 1], energy_train[:, 0], 'o', c="C0", ms = 5, label="Train dataset (RMSE={0:4.2f} mev/atom)".format(error_energy_train))
-if test_flag == 1:
-    plot(energy_test[:, 1], energy_test[:, 0], 'o', c="C6", ms = 2, label="Test dataset (RMSE={0:4.2f} mev/atom)".format(error_energy_test))
-xlim([ene_min, ene_max])
-ylim([ene_min, ene_max])
-xlabel('DFT energy (eV/atom)')
-ylabel('NEP energy (eV/atom)')
-legend(loc="upper left")
+def find_units(name):
+    if name == "force": return ['eV/A/atom', 'meV/A/atom', 4]
+    elif name == "energy": return ['eV/atom', 'meV/atom', 3]
+    elif name == "virial": return ['eV/atom', 'meV/atom', 5]
+    elif name == "stress": return ['GPa', 'MPa', 5]
 
 
-subplot(2, 2, 3)
-set_fig_properties([gca()])
-if test_flag == 1:
-    for_min = np.min([np.min(force_train),np.min(force_test)])
-    for_max = np.max([np.max(force_train),np.max(force_test)])
-else:
-    for_min = np.min(force_train)
-    for_max = np.max(force_train)
-for_min -= (for_max-for_min)*0.1
-for_max += (for_max-for_min)*0.1
-plot([for_min, for_max], [for_min, for_max], c = "grey", lw = 3)
-plot(force_train[:, 3], force_train[:, 0], 'o', c="C2", ms = 5, label="Train dataset (RMSE={0:4.2f} mev/atom)".format(error_force_train))
-plot(force_train[:, 4:6], force_train[:, 1:3], 'o', c="C2", ms = 5)
-if test_flag == 1:
-    plot(force_test[:, 3], force_test[:, 0], 'o', c="C7", ms = 2, label="Test dataset (RMSE={0:4.2f} mev/atom)".format(error_force_test))
-    plot(force_test[:, 4:6], force_test[:, 1:3], 'o', c="C7", ms = 2)
-xlim([for_min, for_max])
-ylim([for_min, for_max])
-xlabel(r'DFT force (eV/$\rm{\AA}$)')
-ylabel(r'NEP force (eV/$\rm{\AA}$)')
-legend(loc="upper left")
+def plot_nep_dft(data, title):
+    # title = [name, type, units]
+    # example: title = ['force', 'eV/A/atom', 'train']
+    nclo = int(data.shape[1]/2)
+    pids = data[:, nclo] > -1e5
+    targe = data[pids, :nclo].reshape(-1)
+    predi = data[pids, nclo:].reshape(-1)
+    units = find_units(title[0])
+
+    data_min = np.min([np.min(targe),np.min(predi)])
+    data_max = np.max([np.max(targe),np.max(predi)])
+    data_min -= (data_max-data_min)*0.1
+    data_max += (data_max-data_min)*0.1
+    plot([data_min, data_max], [data_min, data_max], c="grey", lw=3)
+    xlim([data_min, data_max])
+    ylim([data_min, data_max])
+
+    RMSE = np.sqrt(((predi - targe) ** 2).mean())
+    color = f"C{units[2]}"
+    if title[1] == 'test': color = f"C{units[2]+3}"
+    plot(targe, predi, '.', color=color)
+    xlabel(f'DFT {title[0]} ({units[0]})')
+    ylabel(f'NEP {title[0]} ({units[0]})')
+    legend([f'{title[1]} RMSE:{1000*RMSE:.4f} {units[1]}'], loc="upper left")
+    if print_rmse:
+        print(title[0], title[1], RMSE, units[1])
+    # tight_layout()
 
 
-# subplot(2, 2, 4)
-# set_fig_properties([gca()])
-# if test_flag == 1:
-#     ptra = virial_train[:,-1] > -1e-5
-#     ptes = virial_test[:,-1] > -1e-5
-#     vir_min = np.min([np.min(virial_train[ptra, :]),np.min(virial_test[ptes, :])])
-#     vir_max = np.max([np.max(virial_train[ptra, :]),np.max(virial_test[ptes, :])])
-# else:
-#     ptra = virial_train[:,-1] > -1e-5
-#     vir_min = np.min(virial_train[ptra, :])
-#     vir_max = np.max(virial_train[ptra, :])
-# vir_min -= (vir_max-vir_min)*0.1
-# vir_max += (vir_max-vir_min)*0.1
-# #vir_min = -0.09
-# #vir_max =  0.04
-# plot([vir_min, vir_max], [vir_min, vir_max], c = "grey", lw = 1)
-# if virial_train.shape[1] == 2:
-#     plot(virial_train[ptra, 1], virial_train[ptra, 0], 'o', c="C3", ms = 5, label="Train dataset (RMSE={0:4.2f} mev/atom)".format(error_virial_train))
-# elif virial_train.shape[1] == 12:
-#     plot(virial_train[ptra, 6], virial_train[ptra, 0], 'o', c="C3", ms = 5, label="Train dataset (RMSE={0:4.2f} mev/atom)".format(error_virial_train))
-#     plot(virial_train[ptra, 7:12], virial_train[ptra, 1:6], 'o', c="C3", ms = 5)
-# if test_flag == 1:
-#     if virial_test.shape[1] == 2:
-#         plot(virial_test[ptes, 1], virial_test[ptes, 0], 'o', c="C3", ms = 2, label="Train dataset (RMSE={0:4.2f} mev/atom)".format(error_virial_test))
-#     elif virial_test.shape[1] == 12:
-#         plot(virial_test[ptes, 6], virial_test[ptes, 0], 'o', c="C8", ms = 2, label="Test dataset (RMSE={0:4.2f} mev/atom)".format(error_virial_test))
-#         plot(virial_test[ptes, 7:12], virial_test[ptes, 1:6], 'o', c="C8", ms = 2)
-# xlim([vir_min, vir_max])
-# ylim([vir_min, vir_max])
-# xlabel('DFT virial (eV/atom)')
-# ylabel('NEP virial (eV/atom)')
-# legend(loc="upper left")
+def plot_nep_nep(data_train, data_test, title):
+    # title = [name, type, units]
+    # example: title = ['force', 'eV/A/atom', 'train']
+    nclo = int(data_train.shape[1]/2)
+    pids = data_train[:, nclo] > -1e5
+    train = data_train[pids, nclo:].reshape(-1)
+    test = data_test[pids, nclo:].reshape(-1)
+    units = find_units(title[0])
 
-subplot(2, 2, 4)
-set_fig_properties([gca()])
-if test_flag == 1:
-    ptra = stress_train[:,-1] > -1e-5
-    ptes = stress_test[:,-1] > -1e-5
-    vir_min = np.min([np.min(stress_train[ptra, :]),np.min(stress_test[ptes, :])])
-    vir_max = np.max([np.max(stress_train[ptra, :]),np.max(stress_test[ptes, :])])
-else:
-    ptra = stress_train[:,-1] > -1e-5
-    vir_min = np.min(stress_train[ptra, :])
-    vir_max = np.max(stress_train[ptra, :])
-vir_min -= (vir_max-vir_min)*0.1
-vir_max += (vir_max-vir_min)*0.1
-#vir_min = -0.09
-#vir_max =  0.04
-plot([vir_min, vir_max], [vir_min, vir_max], c = "grey", lw = 1)
-if stress_train.shape[1] == 2:
-    plot(stress_train[ptra, 1], stress_train[ptra, 0], 'o', c="C3", ms = 5, label="Train dataset (RMSE={0:4.2f} MPa)".format(error_stress_train))
-elif stress_train.shape[1] == 12:
-    plot(stress_train[ptra, 6], stress_train[ptra, 0], 'o', c="C3", ms = 5, label="Train dataset (RMSE={0:4.2f} MPa)".format(error_stress_train))
-    plot(stress_train[ptra, 7:12], stress_train[ptra, 1:6], 'o', c="C3", ms = 5)
-if test_flag == 1:
-    if stress_test.shape[1] == 2:
-        plot(stress_test[ptes, 1], stress_test[ptes, 0], 'o', c="C3", ms = 2, label="Train dataset (RMSE={0:4.2f} MPa)".format(error_stress_test))
-    elif stress_test.shape[1] == 12:
-        plot(stress_test[ptes, 6], stress_test[ptes, 0], 'o', c="C8", ms = 2, label="Test dataset (RMSE={0:4.2f} MPa)".format(error_stress_test))
-        plot(stress_test[ptes, 7:12], stress_test[ptes, 1:6], 'o', c="C8", ms = 2)
-xlim([vir_min, vir_max])
-ylim([vir_min, vir_max])
-xlabel('DFT stress (GPa)')
-ylabel('NEP stress (GPa)')
-legend(loc="upper left")
+    data_min = np.min([np.min(train),np.min(test)])
+    data_max = np.max([np.max(train),np.max(test)])
+    data_min -= (data_max-data_min)*0.1
+    data_max += (data_max-data_min)*0.1
+    plot([data_min, data_max], [data_min, data_max], c="grey", lw=3)
+    xlim([data_min, data_max])
+    ylim([data_min, data_max])
 
-subplots_adjust(wspace=0.35, hspace=0.3)
-savefig("RMSE.png", bbox_inches='tight')
-plt.close()
+    RMSE = np.sqrt(((test - train) ** 2).mean())
+    color = f"C{units[2]}"
+    if title[1] == 'test': color = f"C{units[2]+3}"
+    plot(train, test, '.', color=color)
+    xlabel(f'Train {title[0]} ({units[0]})')
+    ylabel(f'Test {title[0]} ({units[0]})')
+    legend([f'{title[1]} RMSE:{1000*RMSE:.4f} {units[1]}'], loc="upper left")
+    # tight_layout()
 
+
+def plot_out(plot_model, out_name="nep_out.png"):
+
+    nep_out_files = ['loss.out',
+                     'energy_train.out', 'energy_test.out',
+                     'force_train.out',  'force_test.out']
+    try:
+        open('stress_train.out', 'r')
+        nep_out_files += ['stress_train.out', 'stress_test.out']
+        stress_flag = 1
+    except FileNotFoundError:
+        nep_out_files += ['virial_train.out', 'virial_test.out']
+        print('WARNING: There is no stress file, use the virial file.')
+        stress_flag = 0
+    except:
+        print('WARNING: There is no virial and stress files.')
+        stress_flag = -1
+
+    data_list = {}
+    for file in nep_out_files:
+        try:
+            data_list[file] = np.loadtxt(file)
+        except:
+            data_list[file] = None
+
+    if   plot_model == 0: plot_data = [1, 1, 0, 1, 0, 1, 0]
+    elif plot_model == 1: plot_data = [1, 0, 1, 0, 1, 0, 1]
+    elif plot_model == 2: plot_data = [1, 1, 1, 1, 1, 1, 1]
+    elif plot_model == 3: plot_data = [0, 1, 0, 1, 0, 1, 0]
+    elif plot_model == 4: plot_data = [0, 0, 1, 0, 1, 0, 1]
+    elif plot_model == 5: plot_data = [0, 1, 1, 1, 1, 1, 1]
+
+    plot_sum = np.sum(plot_data)
+    if plot_sum in [4, 7]:  # plot train_test with loss.
+
+        figure(figsize=(16, 14))
+        subplot(2,2,1)
+        set_fig_properties([gca()])
+        # plot_loss
+        plot_loss(data_list[nep_out_files[0]], test=plot_data[2])
+
+        for i in range(3):   #  plot_train_test
+            subplot(2,2,i+2)
+            set_fig_properties([gca()])
+
+            file_train_ids = 1+2*i
+            if plot_data[file_train_ids] == 1:  # plot_train
+                file_name = nep_out_files[file_train_ids]
+                title = file_name.split('.')[0].split('_')
+                plot_nep_dft(data_list[file_name], title)
+
+            file_test_ids = 2+2*i
+            if plot_data[file_test_ids] == 1:  # plot_test
+                file_name = nep_out_files[file_test_ids]
+                title = file_name.split('.')[0].split('_')
+                plot_nep_dft(data_list[file_name], title)
+
+    elif plot_sum in [3]:
+
+        figure(figsize=(24, 7))
+        for i in range(3):
+            subplot(1,3,i+1)
+
+            file_train_ids = 1+2*i
+            if plot_data[file_train_ids] == 1:
+                file_name = nep_out_files[file_train_ids]
+                title = file_name.split('.')[0].split('_')
+                plot_nep_dft(data_list[file_name], title)
+
+            file_test_ids = 2+2*i
+            if plot_data[file_test_ids] == 1:
+                file_name = nep_out_files[file_test_ids]
+                title = file_name.split('.')[0].split('_')
+                plot_nep_dft(data_list[file_name], title)
+
+    elif plot_sum in [6]:
+
+        figure(figsize=(24, 7))
+        for i in range(3):
+            subplot(1,3,i+1)
+
+            file_train_ids = 1+2*i
+            file_test_ids = 2+2*i
+            if plot_data[file_train_ids] == 1 and plot_data[file_test_ids] == 1:
+                file_train_name = nep_out_files[file_train_ids]
+                file_test_name = nep_out_files[file_test_ids]
+                title = file_train_name.split('.')[0].split('_')
+                plot_nep_nep(data_list[file_train_name], data_list[file_test_name], title)
+
+    savefig(out_name, dpi=150, bbox_inches='tight')
+
+    # plot_model = 0 # 0, train: loss+train
+    # plot_model = 1 # 1, test: loss+test
+    # plot_model = 2 # 2, train+test: loss+train+test
+    # plot_model = 3 # 3, predict: train
+    # plot_model = 4 # 4, compare: train_nep:test_nep
+
+
+print_rmse = True
 plot_nep("nep_txt.png")
-
+plot_out(0, out_name="nep_train.png")
+plot_out(1, out_name="nep_test.png")
+plot_out(2, out_name="nep_train_test.png")
+plot_out(3, out_name="train.png")
+plot_out(4, out_name="test.png")
+plot_out(5, out_name="compare.png")
