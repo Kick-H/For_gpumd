@@ -55,9 +55,9 @@ def plot_nep_dft(data, title):
     # title = [name, type, units]
     # example: title = ['force', 'eV/A/atom', 'train']
     nclo = int(data.shape[1]/2)
-    pids = data[:, nclo] > -1e5
-    targe = data[pids, :nclo].reshape(-1)
-    predi = data[pids, nclo:].reshape(-1)
+    data = np.select([np.logical_and(data>-1e5, data<1e5)], [data])
+    targe = data[:, :nclo].reshape(-1)
+    predi = data[:, nclo:].reshape(-1)
     units = find_units(title[0])
 
     data_min = np.min([np.min(targe),np.min(predi)])
@@ -84,9 +84,10 @@ def plot_nep_nep(data_train, data_test, title):
     # title = [name, type, units]
     # example: title = ['force', 'eV/A/atom', 'train']
     nclo = int(data_train.shape[1]/2)
-    pids = data_train[:, nclo] > -1e5
-    train = data_train[pids, nclo:].reshape(-1)
-    test = data_test[pids, nclo:].reshape(-1)
+    data_train = np.select([np.logical_and(data_train>-1e5, data_train<1e5)], [data_train])
+    data_test = np.select([np.logical_and(data_test>-1e5, data_test<1e5)], [data_test])
+    train = data_train[:, nclo:].reshape(-1)
+    test = data_test[:, nclo:].reshape(-1)
     units = find_units(title[0])
 
     data_min = np.min([np.min(train),np.min(test)])
