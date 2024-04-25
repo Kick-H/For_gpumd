@@ -32,6 +32,7 @@ def plot_nep(pout):
 
 def plot_loss(loss, test=True):
     loss_title = "gen total l1 l2 e_train f_train v_train e_test f_test v_test".split(' ')
+    loss[:,0] = np.arange(1, len(loss)+1)
     for i in range(1, 7):
         loglog(loss[:, 0], loss[:, i], ls="-", lw=lw, label=loss_title[i])
     if test:
