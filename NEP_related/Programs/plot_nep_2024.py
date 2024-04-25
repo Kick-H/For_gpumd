@@ -1,5 +1,6 @@
 import numpy as np
 from pylab import *
+import sys
 
 
 ##set figure properties
@@ -55,9 +56,13 @@ def plot_nep_dft(data, title):
     # title = [name, type, units]
     # example: title = ['force', 'eV/A/atom', 'train']
     nclo = int(data.shape[1]/2)
-    data = np.select([np.logical_and(data>-1e5, data<1e5)], [data])
     targe = data[:, :nclo].reshape(-1)
     predi = data[:, nclo:].reshape(-1)
+    pids = np.abs(targe - predi) < 1e4
+    if np.sum(pids) != len(targe):
+        print(f"WARNING: There are {len(targe)-np.sum(pids)} frams mismatch in {title[0]} {title[1]}")
+    targe = targe[pids]
+    predi = predi[pids]
     units = find_units(title[0])
 
     data_min = np.min([np.min(targe),np.min(predi)])
@@ -76,18 +81,18 @@ def plot_nep_dft(data, title):
     ylabel(f'NEP {title[0]} ({units[0]})')
     legend([f'{title[1]} RMSE:{1000*RMSE:.4f} {units[1]}'], loc="upper left")
     if print_rmse:
-        print(title[0], title[1], f'{1000*RMSE:.4f}', units[1])
+        print(" >>", title[0], title[1], f'{1000*RMSE:.4f}', units[1])
     # tight_layout()
 
 
 def plot_nep_nep(data_train, data_test, title):
     # title = [name, type, units]
     # example: title = ['force', 'eV/A/atom', 'train']
-    nclo = int(data_train.shape[1]/2)
-    data_train = np.select([np.logical_and(data_train>-1e5, data_train<1e5)], [data_train])
-    data_test = np.select([np.logical_and(data_test>-1e5, data_test<1e5)], [data_test])
+    nclo  = int(data_train.shape[1]/2)
     train = data_train[:, nclo:].reshape(-1)
-    test = data_test[:, nclo:].reshape(-1)
+    test  = data_test[:, nclo:].reshape(-1)
+    train = np.select([np.logical_and(train>-1e5, train<1e5)], [train])
+    test  = np.select([np.logical_and(test>-1e5,  test<1e5)],  [test])
     units = find_units(title[0])
 
     data_min = np.min([np.min(train),np.min(test)])
@@ -202,14 +207,14 @@ def plot_out(plot_model, out_name="nep_out.png"):
     # plot_model = 1 # 1, test: loss+test
     # plot_model = 2 # 2, train+test: loss+train+test
     # plot_model = 3 # 3, predict: train
-    # plot_model = 4 # 4, compare: train_nep:test_nep
+    # plot_model = 4 # 4, predict: test
+    # plot_model = 5 # 5, compare: train_nep:test_nep
 
+name_list = ["nep_train.png", "nep_test.png", "nep_train_test.png", "train.png", "test.png", "compare.png"]
 
+plot_model = int(sys.argv[1])
 print_rmse = True
-plot_nep("nep_txt.png")
-plot_out(0, out_name="nep_train.png")
-plot_out(1, out_name="nep_test.png")
-plot_out(2, out_name="nep_train_test.png")
-plot_out(3, out_name="train.png")
-plot_out(4, out_name="test.png")
-plot_out(5, out_name="compare.png")
+
+plot_out(plot_model, out_name=name_list[plot_model])
+if plot_model in [0, 1, 2]:
+    plot_nep("nep_txt.png")
