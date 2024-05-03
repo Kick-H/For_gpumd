@@ -7,6 +7,7 @@ def get_atom_symble(atom):
     atom_symb = atom.symbols
     form_symb = atom_symb.formula
     form_keys = list(form_symb.count().keys())
+    list.sort(form_keys)
     form_name = "".join(form_keys)
     return form_name
 
