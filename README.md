@@ -23,9 +23,9 @@ Directory structure of this project:
 ### Authors:
 ------------------
 
-* Xu Ke (Northwest A&F University.)
-  * kickhsu(at)gmail.com
-  * twtdq(at)126.com
+* Xu Ke
+- kickhsu(at)gmail.com
+- twtdq(at)126.com
 
 If you are willing to work together (without pay, for free), please contact the author in time.
 
