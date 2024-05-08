@@ -2,7 +2,7 @@
 
 One can get the introduction of `GPUMD` on https://github.com/brucefan1983/GPUMD/blob/master/README.md.
 
-Here are two published paper[1,2], that use `GPUMD`. The developer of `GPUMD`: Bruce Fan is also a co-author. At the request of Bruce Fan, all the data and code for both articles will be published here. One can learn how to use `GPUMD` to do a job and even publish articles. At present, only relevant research work on the thermal transport of black phosphorus and molybdenum disulfide is disclosed. In the future, more and more people will come here to use `GPUMD` to disclose their work.
+Here are published papers, that use `GPUMD`. The developer of `GPUMD`: Bruce Fan is also a co-author. All the data and code for the articles will be published here. One can learn how to use `GPUMD` to do a job and even publish articles. At present, only relevant research work on the thermal transport of black phosphorus and molybdenum disulfide is disclosed. In the future, more and more people will come here to use `GPUMD` to disclose their work.
 
 Let us cheer for the wonderful tomorrow of `GPUMD`!
 
@@ -10,34 +10,6 @@ Let us cheer for the wonderful tomorrow of `GPUMD`!
 ------------------
 
 Directory structure of this project:
-
-```
-GpumdSupport (Root directory)
-│
-├── README.md
-│
-├── LICENSE    # a gnu license
-│
-├── Compiling
-│   │
-│   ├── GPUMD
-│   │
-│   ├── LAMMPS
-│   │
-│   └── SupportPackage
-│
-├── Test
-│   │
-│   └── CrossTestWithLAMMPS
-│       │
-│       └── Force
-│
-└── ThermalTransport
-    │
-    ├── BlackPhosphorus (Work: Thermal transport properties of single-layer black phosphorus from extensive molecular dynamics simulations)
-    │
-    └── MolybdenumDisulfide (Work: Thermal transport in MoS2 from molecular dynamics using different empirical potentials)
-```
 
 ### How to use it
 ---------------------
@@ -60,19 +32,9 @@ If you are willing to work together (without pay, for free), please contact the 
 ### Feedbacks:
 ------------------
 
-You can e-mail the author (Xu Ke) if you find errors in the bugs in the source code, or have any suggestions/questions about the manual and code.
 You can e-mail the author (Xu Ke) if you find errors in a program or data, or have any suggestions/questions about the program or data.
 
 Thank you!
-
-### Acknowledgement
-------------------
-
-* Zheyong Fan (Bohai University and Aalto University)
-  * Email: brucenju(at)gmail.com
-  * Github: https://github.com/brucefan1983
-  * Sciencenet.cn: http://blog.sciencenet.cn/u/brucefan1983
-  * Google Scholar: https://scholar.google.com.hk/citations?user=bsOhaEAAAAAJ&hl=en
 
 ### References
 ------------------
