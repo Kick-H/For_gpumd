@@ -1,35 +1,68 @@
-from gpyumd.load import load_thermo
 from ase.io import read
 import os
 import numpy as np
-import pandas as pd
 import matplotlib.pyplot as plt
 
 
-def get_dens(vol, nat):
-    mol_mass = 1.008*2+15.999    # H_2O
+def load_thermo(filename: str = "thermo.out", directory: str = None) -> dict[str, np.ndarray]:
+    """
+    Loads data from thermo.out GPUMD output file.
+
+    Args:
+        filename: Name of thermal data file
+        directory: Directory to load thermal data file from
+
+    Returns:
+        Dict containing the data from thermo.out. Units are [temperature
+         -> K], [K, U -> eV], [Px, Py, Pz, Pyz, Pxz, Pxy -> GPa],
+         [Lx, Ly, Lz, ax, ay, az, bx, by, bz, cx, cy, cz -> A]
+    """
+    thermo_path = os.path.join(directory, filename)
+    data = np.loadtxt(thermo_path)
+    labels = ['temperature', 'K', 'U', 'Px', 'Py', 'Pz', 'Pyz', 'Pxz', 'Pxy']
+    if data.shape[1] == 12:  # orthogonal
+        labels += ['Lx', 'Ly', 'Lz']
+    elif data.shape[1] == 18:  # triclinic
+        labels += ['ax', 'ay', 'az', 'bx', 'by', 'bz', 'cx', 'cy', 'cz']
+    else:
+        raise ValueError(f"The file {filename} is not a valid thermo.out file.")
+
+    out_data = dict()
+    for i in range(data.shape[1]):
+        out_data[labels[i]] = data[:,i]
+
+    return out_data
+
+
+def get_dens(vol, mol_mass):
     N_A = 6.02214076e23
     nm_cm_3 = 1e-7**3            # nm to cm
-    n_mols = nat/3
     #      _________g_________   _____cm^3____
-    dens = n_mols*mol_mass/N_A / (vol*nm_cm_3)
+    dens = mol_mass/N_A / (vol*nm_cm_3)
     return dens     # g/nm^3
 
 
-def proc_thermo(dirs, delt_block=500, fin='thermo.out'):
+def proc_thermo(dirs, delt_block=500, fin='thermo.out', jump_line=100):
 
     data = load_thermo(filename=fin, directory=dirs)
-    if delt_block != 0:
-        db = delt_block
-        nb = round(len(data['U'])/db)
-    else:
-        db = data.shape[0]
-        nb = 1
     atom = read(f'{dirs}/model.xyz', format='extxyz')
     natoms = atom.get_global_number_of_atoms()
     data['Volume'] = data['Lx']*data['Ly']*data['Lz']/1000
     data['Energy'] = data['U'] # + data['K']
-    data['Density'] = get_dens(data['Volume'], natoms)
+    data['Masses'] = np.array([np.sum(atom.get_masses())] * len(data['Volume']))
+    data['Density'] = get_dens(data['Volume'], data['Masses'])
+    for ndir in data:
+        data[ndir] = data[ndir][jump_line:]
+
+    # display keys of the data.
+    # print(data.keys())
+
+    if delt_block != 0:
+        db = delt_block
+        nb = round(len(data['U'])/db)
+    else:
+        db = data['temperature'].shape[0]
+        nb = 1
 
     out_data = {}
     for i in range(nb):
@@ -58,7 +91,7 @@ def get_ave_data(data):
     #labels = open()
 
 
-def plot_thermo(ave_data, plist=['temperature'], out_data=True):
+def output_data(ave_data, plist=['temperature'], out_data=True):
     plot_data = {'num':[]}
     for i, pi in enumerate(plist):
         plot_data[pi] = []
@@ -70,16 +103,6 @@ def plot_thermo(ave_data, plist=['temperature'], out_data=True):
             if len(plot_data['num']) < len(plot_data[pi]):
                 plot_data['num'].append(di)
 
-    #nx = int(np.sqrt(plist)) + 1
-    #ny = int(len(plist)/nx) + 1
-    # fig, axs = plt.subplots(nx, ny) #, figsize=(12,10)
-    # for i, pi in enumerate(plist):
-    #     ax, ay = i%nx, i//nx
-    #     axs[0, 0].errorbar(datax, datay, yerr=stdy, fmt="o",
-    #         ecolor='k', elinewidth=2, mfc=color_list[ci], ms=10,
-    #         mec='k', mew=1, alpha=1, label=f"NEP-MB-pol({i})",
-    #         capsize=5, capthick=3, linestyle="none")
-    #     axs[ax, ay]
     with open(out_data, 'w') as fo:
         out_str = "num"
         for pi in plist:
@@ -94,13 +117,13 @@ def plot_thermo(ave_data, plist=['temperature'], out_data=True):
             out_str += "\n"
         fo.write(out_str)
 
-
-for mi in [6]:
-    name = f"{mi}-300"
+for mi in [1]:
+    name = f"MBpol-{mi}-280"
     fdir = f"../{name}"
     outfile = f"{name}.dat"
-    out_data = proc_thermo(fdir, delt_block=500, fin='thermo.out')
+    out_data = proc_thermo(fdir, delt_block=500, fin='thermo.out', jump_line=0)
     ave_data = get_ave_data(out_data)
     plist = ['temperature', 'Energy', 'Volume', 'Density']
     plist = ['temperature', 'Density']
-    plot_thermo(ave_data, plist=plist, out_data=outfile)
+    output_data(ave_data, plist=plist, out_data=outfile)
+
