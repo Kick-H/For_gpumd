@@ -1,0 +1,20 @@
+# replicate   2 2 1
+potential   /home/fla/software/GPUMD/PR-src-nhc-power/si_fixed_boundary/Si_2022_NEP4_4body.txt
+velocity    300
+
+time_step   1
+
+ensemble    npt_ber 300 300 100 0 0 0 500 500 500 1000
+fix         0
+run         10000
+
+ensemble    nvt_nhc 300 300 100
+fix         0
+run         100000
+
+ensemble    heat_nhc_power 300 100 0.00242 1 2
+fix         0
+compute     0 10 100 temperature
+dump_thermo 1000
+run         1000000
+

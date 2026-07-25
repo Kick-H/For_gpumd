@@ -1,0 +1,244 @@
+
+***************************************************************
+*                 Welcome to use GPUMD                        *
+*     (Graphics Processing Units Molecular Dynamics)          *
+*                     version 5.6                             *
+*              This is the gpumd executable                   *
+***************************************************************
+
+
+---------------------------------------------------------------
+Compiling options:
+---------------------------------------------------------------
+
+DEBUG is off: Use different PRNG seeds for different runs.
+
+---------------------------------------------------------------
+GPU information:
+---------------------------------------------------------------
+
+number of GPUs = 1
+Device id:                   0
+    Device name:             NVIDIA GeForce RTX 5090
+    Compute capability:      12.0
+    Amount of global memory: 31.3574 GB
+    Number of SMs:           170
+
+---------------------------------------------------------------
+Started running GPUMD.
+---------------------------------------------------------------
+
+
+---------------------------------------------------------------
+Started initializing positions and related parameters.
+---------------------------------------------------------------
+
+Number of atoms is 6400.
+Use periodic boundary conditions along x.
+Use periodic boundary conditions along y.
+Use periodic boundary conditions along z.
+Box matrix h = [a, b, c] is
+    2.1724000000e+01    0.0000000000e+00    0.0000000000e+00
+    0.0000000000e+00    2.1724000000e+01    0.0000000000e+00
+    0.0000000000e+00    0.0000000000e+00    2.7155000000e+02
+Inverse box matrix g = inv(h) is
+    4.6032038299e-02    0.0000000000e+00    0.0000000000e+00
+    0.0000000000e+00    4.6032038299e-02    0.0000000000e+00
+    0.0000000000e+00    0.0000000000e+00    3.6825630639e-03
+Do not specify initial velocities here.
+Have 1 grouping method(s).
+There are 41 groups of atoms in grouping method 0.
+    512 atoms in group 0.
+    512 atoms in group 1.
+    512 atoms in group 2.
+    128 atoms in group 3.
+    128 atoms in group 4.
+    128 atoms in group 5.
+    128 atoms in group 6.
+    128 atoms in group 7.
+    128 atoms in group 8.
+    128 atoms in group 9.
+    128 atoms in group 10.
+    128 atoms in group 11.
+    128 atoms in group 12.
+    128 atoms in group 13.
+    128 atoms in group 14.
+    128 atoms in group 15.
+    128 atoms in group 16.
+    128 atoms in group 17.
+    128 atoms in group 18.
+    128 atoms in group 19.
+    128 atoms in group 20.
+    128 atoms in group 21.
+    128 atoms in group 22.
+    128 atoms in group 23.
+    128 atoms in group 24.
+    128 atoms in group 25.
+    128 atoms in group 26.
+    128 atoms in group 27.
+    128 atoms in group 28.
+    128 atoms in group 29.
+    128 atoms in group 30.
+    128 atoms in group 31.
+    128 atoms in group 32.
+    128 atoms in group 33.
+    128 atoms in group 34.
+    128 atoms in group 35.
+    128 atoms in group 36.
+    128 atoms in group 37.
+    128 atoms in group 38.
+    128 atoms in group 39.
+    128 atoms in group 40.
+There is only one atom type.
+    6400 atoms of type 0.
+Initialized velocities with default T = 300 K.
+
+---------------------------------------------------------------
+Finished initializing positions and related parameters.
+---------------------------------------------------------------
+
+
+---------------------------------------------------------------
+Started executing the commands in run.in.
+---------------------------------------------------------------
+
+Use the NEP4 potential with 1 atom type.
+    type 0 (Si with Z = 14).
+    radial cutoff = 5 A.
+    angular cutoff = 5 A.
+    MN_radial = 53.
+    enlarged MN_radial = 67.
+    enlarged MN_angular = 67.
+    n_max_radial = 10.
+    n_max_angular = 10.
+    basis_size_radial = 10.
+    basis_size_angular = 10.
+    l_max_3body = 4.
+    has_q_222 = 2.
+    has_q_1111 = 0.
+    has_q_112 = 0.
+    has_q_123 = 0.
+    has_q_233 = 0.
+    has_q_134 = 0.
+    ANN = 66-50-1.
+    number of neural network parameters = 3401.
+    number of descriptor parameters = 242.
+    total number of parameters = 3643.
+Initialized velocities with input T = 300 K.
+Time step for this run is 1 fs.
+Use NPT ensemble for this run.
+    choose the Berendsen method.
+    initial temperature is 300 K.
+    final temperature is 300 K.
+    tau_T is 100 time_step
+    pressure_xx is 0 GPa.
+    pressure_yy is 0 GPa.
+    pressure_zz is 0 GPa.
+    modulus_xx is 500 GPa.
+    modulus_yy is 500 GPa.
+    modulus_zz is 500 GPa.
+    tau_p is 1000 time_step.
+Group 0 in grouping method 0 will be fixed.
+Dump extended XYZ.
+    for the whole system.
+    every 10000 steps.
+    into file positions.xyz.
+    has group.
+Run 10000 steps.
+    1000 steps completed.
+    2000 steps completed.
+    3000 steps completed.
+    4000 steps completed.
+    5000 steps completed.
+    6000 steps completed.
+    7000 steps completed.
+    8000 steps completed.
+    9000 steps completed.
+    10000 steps completed.
+
+---------------------------------------------------------------
+Time used for this run = 10.357 second.
+Speed of this run = 6.17938e+06 atom*step/second.
+---------------------------------------------------------------
+
+Use NVT ensemble for this run.
+    choose the Nose-Hoover chain method.
+    initial temperature is 300 K.
+    final temperature is 300 K.
+    tau_T is 100 time_step.
+Group 0 in grouping method 0 will be fixed.
+Dump extended XYZ.
+    for the whole system.
+    every 100000 steps.
+    into file positions.xyz.
+    has group.
+Run 100000 steps.
+    10000 steps completed.
+    20000 steps completed.
+    30000 steps completed.
+    40000 steps completed.
+    50000 steps completed.
+    60000 steps completed.
+    70000 steps completed.
+    80000 steps completed.
+    90000 steps completed.
+    100000 steps completed.
+
+---------------------------------------------------------------
+Time used for this run = 106.644 second.
+Speed of this run = 6.00125e+06 atom*step/second.
+---------------------------------------------------------------
+
+Integrate with heating and cooling for this run.
+    choose the Nose-Hoover chain method.
+    average temperature is 300 K.
+    tau_T is 100 time_step.
+    delta_T is 100 K.
+    T_hot is 400 K.
+    T_cold is 200 K.
+    heat source is group 1 in grouping method 0.
+    heat sink is group 2 in grouping method 0.
+Group 0 in grouping method 0 will be fixed.
+Compute space and/or time average of:
+    temperature
+    using grouping method 0.
+    with sampling interval 10.
+    and output interval 100.
+Dump thermo every 1000 steps.
+Dump extended XYZ.
+    for the whole system.
+    every 1000000 steps.
+    into file positions.xyz.
+    has group.
+Run 1000000 steps.
+    100000 steps completed.
+    200000 steps completed.
+    300000 steps completed.
+    400000 steps completed.
+    500000 steps completed.
+    600000 steps completed.
+    700000 steps completed.
+    800000 steps completed.
+    900000 steps completed.
+    1000000 steps completed.
+
+---------------------------------------------------------------
+Time used for this run = 1072.58 second.
+Speed of this run = 5.96691e+06 atom*step/second.
+---------------------------------------------------------------
+
+
+---------------------------------------------------------------
+Finished executing the commands in run.in.
+---------------------------------------------------------------
+
+
+---------------------------------------------------------------
+Time used = 1189.594153 s.
+---------------------------------------------------------------
+
+
+---------------------------------------------------------------
+Finished running GPUMD.
+---------------------------------------------------------------
+
